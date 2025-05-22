@@ -2,6 +2,7 @@ if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
 }
 
+const port = process.env.PORT || 3000;
 
 // ====================
 // Third-Party Packages
@@ -46,6 +47,7 @@ const replyRoutes = require('./routes/replies.js')
 // ====================
 // Config
 // ====================
+//const dbUrl = process.env.DB_URL
 const dbUrl = process.env.DB_URL || "mongodb://127.0.0.1:27017/home-makers-diy";
 //const dbUrl = 'mongodb://127.0.0.1:27017/home-makers-diy';
 
@@ -219,8 +221,8 @@ app.use((err, req, res, next) => {
 })
 
 
-app.listen(3000, () => {
-    console.log('Serving on port 3000')
+app.listen(port, () => {
+    console.log(`Serving on port ${port}`)
 })
 
 
