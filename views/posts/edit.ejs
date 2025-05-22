@@ -1,0 +1,88 @@
+<% layout ('../layouts/boilerplate') %>
+
+
+
+    <div class="container new-post-container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8">
+                <div class="card shadow-lg border-0 " style="border-radius: 1rem; overflow: hidden;">
+
+                    <!-- Header -->
+                    <div class="card-header text-center">
+                        <h2 class="mb-0 fw-bold">Edit Post</h2>
+                    </div>
+                    <div class="card-body new-form bg-light p-4">
+
+                        <form action="/posts/<%=post._id%>?_method=PUT" method="POST" id="edit-post-form"
+                            class="validated-form" enctype="multipart/form-data" novalidate>
+
+                            <!-- Title -->
+                            <div class="form-floating mb-4">
+                                <input type="text" class="form-control " id="title" name="post[title]"
+                                    placeholder="Post Title" value="<%=post.title%>" required>
+                                <label for="title">Post Title</label>
+                                <small id="title-count">0 / 20 words</small>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+
+                            <!-- Description -->
+                            <div class="form-floating mb-4">
+                                <input type="text" class="form-control" id="description" name="post[description]"
+                                    placeholder="Short Description" value="<%=post.description%>" required>
+                                <label for="description">Short Description</label>
+                                <small id="description-count">0 / 50 words</small>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+
+                            <!-- Thumbnail -->
+                            <div class="mb-4">
+                                <label for="thumbnail" class="form-label">Change Thumbnail</label>
+                                <div class="mb-3">
+                                    <img src="<%= post.thumbnail.preview %>" class="img-thumbnail" alt="Post Thumbnail">
+                                </div>
+                                <input type="file" class="form-control" name="thumbnail" id="thumbnail"
+                                    value="<%=post.thumbnail%>">
+                                <div class="valid-feedback">Looks good!</div>
+                                <p id="file-error" class="text-danger small mt-2"></p>
+                            </div>
+                            <!-- Tags -->
+                            <%- include('../partials/tagsForm', { tags: post.tags }) %>
+
+                                <!-- Content -->
+                                <div class="mb-4">
+                                    <label for="content" class="form-label">Edit Content</label>
+                                    <textarea id="content" class="form-control" name="post[content]"
+                                        required><%= post.content  %></textarea>
+                                    <div class="valid-feedback">Looks good!</div>
+                                </div>
+
+                                <div id="form-error-msg" class="text-danger mb-2" style="display: none;">
+                                    Please fix the word limits before submitting.
+                                </div>
+
+
+                                <!-- Submit Buttons -->
+                                <div class="d-flex justify-content-between">
+
+                                    <button type="submit" class="btn save-draft-btn" name="post[status]" value="draft">
+                                        <i class="bi bi-pencil-square me-1"></i>Save as Draft
+                                    </button>
+                                    <button type="submit" class="btn publish-btn" name="post[status]" value="published">
+                                        <i class="bi bi-upload me-1"></i>Publish
+                                    </button>
+                                </div>
+
+
+                        </form>
+                    </div>
+                    <div class="card-footer text-muted text-end small bg-white">
+                        Posts help our community grow 💬
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <%- include('../partials/confirmationModal') %>

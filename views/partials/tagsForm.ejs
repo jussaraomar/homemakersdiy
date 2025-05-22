@@ -1,0 +1,66 @@
+<div class="mb-3 tags__form">
+
+    <label for="" class="form-label">Tags</label>
+    <% const selectedTags=typeof tags !=='undefined' ? tags : []; %>
+
+        <!-- Tags: Content Type -->
+        <fieldset class="mb-3">
+            <legend>Content Type</legend>
+            <% ['tutorial', 'article' , 'guide' , 'tip' , 'product-review' , 'before-after' , 'step-by-step'
+                ].forEach(tag=> { %>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="post[tags][]" value="<%= tag %>"
+                        <%=selectedTags.includes(tag) ? 'checked' : '' %>>
+                    <label class="form-check-label">
+                        <%= tag.replace('-', ' ' ) %>
+                    </label>
+                </div>
+                <% }) %>
+        </fieldset>
+
+
+        <!-- Tags: Room -->
+        <fieldset class="mb-3">
+            <legend>Room</legend>
+            <% ['kitchen', 'bathroom' , 'bedroom' , 'living-room' , 'garage' , 'basement' , 'laundry-room' , 'outdoor'
+                ].forEach(tag=> { %>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="post[tags][]" value="<%= tag %>"
+                        <%=selectedTags.includes(tag) ? 'checked' : '' %>>
+                    <label class="form-check-label">
+                        <%= tag.replace('-', ' ' ) %>
+                    </label>
+                </div>
+                <% }) %>
+        </fieldset>
+
+        <!-- Tags: Project Type -->
+        <fieldset class="mb-3">
+            <legend>Project Type</legend>
+            <% ['painting', 'flooring' , 'plumbing' , 'electrical' , 'tiling' , 'furniture' , 'lighting' , 'decor'
+                , 'storage' , 'organization' , 'landscaping' ].forEach(tag=> { %>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="post[tags][]" value="<%= tag %>"
+                        <%=selectedTags.includes(tag) ? 'checked' : '' %>>
+                    <label class="form-check-label">
+                        <%= tag.replace('-', ' ' ) %>
+                    </label>
+                </div>
+                <% }) %>
+        </fieldset>
+
+        <!-- Tags: Skill & Budget -->
+        <fieldset class="mb-3">
+            <legend>Other</legend>
+            <% ['beginner', 'intermediate' , 'advanced' , 'budget-friendly' , 'mid-range' , 'premium' ].forEach(tag=> {
+                %>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="post[tags][]" value="<%= tag %>"
+                        <%=selectedTags.includes(tag) ? 'checked' : '' %>>
+                    <label class="form-check-label">
+                        <%= tag.replace('-', ' ' ) %>
+                    </label>
+                </div>
+                <% }) %>
+        </fieldset>
+</div>

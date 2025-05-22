@@ -1,0 +1,58 @@
+<% layout ('../layouts/boilerplate') %>
+
+    <div class="row new-thread-container justify-content-center my-5">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0" style="border-radius: 1rem; overflow: hidden;">
+
+                <!-- Header -->
+                <div class="card-header text-center">
+                    <h2 class="mb-0 fw-bold">Ask a Question</h2>
+                </div>
+
+                <!-- Body -->
+                <div class="card-body p-4 bg-light">
+                    <form action="/forum" method="POST" id="thread-form" class="needs-validation" novalidate
+                        autocomplete="off">
+
+                        <!-- Title -->
+                        <div class="mb-4">
+                            <label for="title" class="form-label fw-semibold">Question Title</label>
+                            <input type="text" name="thread[title]" id="title" class="form-control" required>
+                            <small id="title-count">0 / 20 words</small>
+                            <div class="valid-feedback">Looks good!</div>
+                        </div>
+
+                        <!-- Body -->
+                        <div class="mb-4">
+                            <label for="body" class="form-label fw-semibold">Content</label>
+                            <textarea name="thread[body]" id="body" rows="5" class="form-control" required></textarea>
+                            <small id="body-count">0 / 300 words</small>
+                            <div class="valid-feedback">Looks good!</div>
+                        </div>
+
+                        <div id="form-error-msg" class="text-danger mb-2" style="display: none;">
+                            Please fix the word limits before submitting.
+                        </div>
+
+                        <!-- Submit and Back -->
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="/forum" class="text-muted text-decoration-none">
+                                <i class="bi bi-arrow-left-circle me-1"></i>Back to Forum
+                            </a>
+                            <button type="submit" class="btn post-thread-btn px-4 rounded-pill fw-semibold shadow-sm">
+                                <i class="bi bi-send-fill me-1"></i>Post Thread
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Footer -->
+                <div class="card-footer text-muted text-end small bg-white">
+                    Get help from the community memebers by asking questions 💬
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <%- include('../partials/confirmationModal') %>

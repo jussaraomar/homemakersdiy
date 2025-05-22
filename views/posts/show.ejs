@@ -1,0 +1,348 @@
+<% layout ('../layouts/boilerplate') %>
+    <!-- Show Page Header -->
+    <div class="show-header">
+        <div class="post-hero">
+            <img src="<%=post.thumbnail.url%>" class="w-100 h-100" alt="Post Thumbnail">
+        </div>
+
+        <!-- Overlapping Card -->
+        <div class="container position-relative">
+            <div class="post-title-card bg-white shadow p-4 mx-auto ">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start  gap-3">
+
+
+                    <div>
+                        <!-- Title and Description -->
+                        <h2 class="fw-bold mb-2">
+                            <%= post.title %>
+                        </h2>
+                        <p class="text-muted mb-3">
+                            <%= post.description %>
+                        </p>
+
+                        <hr class="border__hr" />
+
+
+                        <div class="d-flex flex-wrap gap-3 small text-muted align-items-center">
+
+                            <!-- Post Author Details  -->
+                            <div class="d-flex align-items-center">
+
+
+                                <% if (post.author.profilePicture) { %>
+                                    <img src="<%= post.author.profilePicture.pfp %>" class="rounded-circle me-2"
+                                        style="height: 2rem; width: 2rem;" alt="Post Author Profile Picture">
+                                    <% } else { %>
+                                        <div class="avatar-circle text-white rounded-circle d-flex align-items-center justify-content-center me-2"
+                                            style="height: 2rem; width: 2rem;">
+
+                                            <%= post.author.username.charAt(0).toUpperCase() %>
+
+                                        </div>
+                                        <% } %>
+
+                                            <strong>
+                                                <a href="/users/<%= post.author._id %>">
+                                                    <%= post.author.username %>
+                                                </a>
+                                            </strong>
+
+                            </div>
+
+                            <!-- Post Likes and Creation Date  -->
+                            <span>❤️ <%= post.likes.length %>
+                                    <%if( post.likes.length===1){%> like <%} else{%> likes <%}%></span>
+
+                            <span>Posted on <%= post.createdAt.toLocaleDateString('en-US', { year: 'numeric' ,
+                                    month: 'long' , day: 'numeric' }) %></span>
+                        </div>
+
+                        <!-- Post Tags  -->
+                        <% if (post.tags.length>0) {%>
+                            <hr class="border__hr" />
+                            <div class="d-flex flex-wrap gap-2 small text-muted align-items-center">
+                                <% post.tags.forEach((tag, i)=> { %>
+                                    <span class="badge bg-secondary rounded-pill 
+                                           <%= i < 8 ? 'd-inline-flex' : 'd-none' %> 
+                                           align-items-center extra-tag-<%= post._id %>">
+                                        <%= tag %>
+                                    </span>
+                                    <% }) %>
+
+                                        <% if (post.tags.length> 8) { %>
+                                            <button class="btn btn-sm btn-outline-info toggle-tags-btn"
+                                                data-post-id="<%= post._id %>">Show More</button>
+                                            <% } %>
+                            </div>
+                            <%}%>
+
+                    </div>
+
+                    <!-- Action Buttons -->
+
+                    <div class="d-flex flex-column flex-sm-row gap-2 show-header-buttons">
+                        <% if (currentUser && currentUser._id.equals(post.author._id)) { %>
+                            <a href="/posts/<%= post._id %>/edit" class="btn btn-sm show-edit-btn">Edit</a>
+                            <form action="/posts/<%= post._id %>?_method=DELETE" method="POST">
+                                <button class="btn btn-sm show-delete-btn btn-danger open-delete-modal w-100"
+                                    type="button">Delete</button>
+                            </form>
+
+                            <% } %>
+                                <div class="buttons d-flex  justify-content-between">
+                                    <% if (currentUser) { %>
+                                        <form
+                                            action="/posts/<%= post._id %>/<%= post.likes.includes(currentUser?._id) ? 'unlike' : 'like' %>?from=post-show"
+                                            method="POST" class="d-inline me-2">
+                                            <button type="submit" class="btn btn-sm d-flex align-items-center gap-1 
+                        <%= post.likes.includes(currentUser?._id) ? 'btn-danger' : 'btn-outline-danger' %>">
+                                                <i
+                                                    class="bi <%= post.likes.includes(currentUser?._id) ? 'bi-heart-fill' : 'bi-heart' %>"></i>
+
+                                            </button>
+                                        </form>
+
+                                        <% const isBookmarked=currentUser.bookmarks.includes(post._id.toString()); %>
+                                            <form method="POST"
+                                                action="/posts/<%= post._id %>/<%= isBookmarked ? 'unmark' : 'bookmark' %>?from=post-show">
+                                                <button
+                                                    class="btn btn-sm btn-bookmark <%= isBookmarked ? 'bookmarked' : 'unmarked' %>">
+                                                    <i
+                                                        class="bi <%= isBookmarked ? 'bi-bookmark-fill' : 'bi-bookmark' %>  <%= isBookmarked ? 'bi-marked' : 'bi-unmarked' %>  "></i>
+                                                </button>
+                                            </form>
+                                            <% } %>
+                                </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Thumbnail in full  -->
+    <div class="px-3 px-sm-4 px-md-0">
+        <div class="row mb-2">
+            <div class="col-md-8 offset-md-2">
+                <div class="image-preview mx-auto">
+                    <% if (!post.thumbnail.url.includes('/images/default-thumbnail-2.svg')) { %>
+                        <img class="logo__home img-fluid" src="<%= post.thumbnail.url %>" alt="Post Thumbnail">
+                        <% } %>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content  -->
+    <div class="px-3 px-sm-4 px-md-0 post-contents">
+        <div class="row mb-5">
+            <div class="col-md-8 offset-md-2">
+
+                <div id="viewer" class="mx-auto">
+                    <%- post.content %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Review Form  -->
+    <div class="px-3 px-sm-4 px-md-0">
+        <div class="row">
+            <div class="col-md-8 offset-md-2 mb-3 mx-auto">
+
+                <% if (currentUser) {%>
+                    <div class="review-form p-4">
+                        <h2 class="review-title mb-3">Leave a Review</h2>
+
+                        <form action="/posts/<%=post._id%>/reviews" method="POST" enctype="multipart/form-data"
+                            id="review-form" class="validated-form" novalidate>
+                            <!-- Star Rating  -->
+                            <div class="star-rating">
+                                <fieldset class="starability-basic">
+                                    <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]"
+                                        value="0" checked aria-label="No rating." />
+                                    <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                                    <label for="first-rate1" title="Terrible">1 star</label>
+                                    <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                                    <label for="first-rate2" title="Not good">2 stars</label>
+                                    <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                                    <label for="first-rate3" title="Average">3 stars</label>
+                                    <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                                    <label for="first-rate4" title="Very good">4 stars</label>
+                                    <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                                    <label for="first-rate5" title="Amazing">5 stars</label>
+                                </fieldset>
+
+                            </div>
+                            <div id="form-error-msg-rating" class="text-danger mb-1" style="display: none;">
+                                Please leave a rating.
+                            </div>
+                            <!-- Upload Image  -->
+                            <div class="mb-3">
+                                <label for="review-image" class="form-label">Upload an image (optional)</label>
+                                <input type="file" class="form-control" id="review-image" name="image" accept="image/*">
+                            </div>
+
+                            <!-- Review Body  -->
+                            <div class="form-floating mb-4">
+                                <textarea class="form-control" placeholder="Write your review here..."
+                                    name="review[body]" id="body" style="height: 150px" required></textarea>
+                                <label for="body">Write your review...</label>
+                                <small id="body-count">0 / 300 words</small>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+                            <div id="form-error-msg" class="text-danger mb-2" style="display: none;">
+                                Please fix the word limits before submitting.
+                            </div>
+
+                            <!-- Submit Review Button  -->
+                            <button class="btn btn-review w-100 shadow-sm">Submit Review</button>
+                        </form>
+                    </div>
+                    <% } %>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Reviews  -->
+    <div class="container reviews-container py-4">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-8">
+
+                <% if(post.reviews.length>0) {%>
+                    <h3 class="mb-3">Reviews:</h3>
+
+                    <% for (let review of post.reviews) { %>
+                        <div class="card mb-4 shadow-sm border-0 review-card">
+                            <div class="card-body d-flex flex-column flex-sm-row align-items-start gap-3">
+
+                                <!--Review Author Avatar -->
+                                <%if(review.author.profilePicture){ %>
+                                    <img src="<%= review.author.profilePicture?.pfp%>"
+                                        alt="Review Author Profile Picture" class="rounded-circle"
+                                        style="height: 3rem; width: 3rem;">
+                                    <%} else {%>
+
+                                        <div
+                                            class="avatar-circle d-none d-sm-flex align-items-center justify-content-center">
+                                            <span class="text-white fw-bold">
+                                                <%= review.author.username.charAt(0).toUpperCase() %>
+                                            </span>
+                                        </div>
+                                        <%}%>
+
+
+                                            <div class="flex-fill review-content">
+                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                    <a href="/users/<%= review.author._id %>">
+                                                        <h5 class="mb-0"><strong>
+                                                                <%= review.author.username %>
+                                                            </strong>
+                                                        </h5>
+                                                    </a>
+
+
+                                                </div>
+                                                <!-- Review Image  -->
+                                                <% if (review.image && review.image.url) { %>
+                                                    <!-- Thumbnail -->
+                                                    <div class="review-image">
+                                                        <img src="<%= review.image.preview %>" alt="Review Image"
+                                                            class="img-thumbnail mb-2"
+                                                            style="max-width: 150px; cursor: pointer;"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#imageModal-<%= review._id %>">
+                                                    </div>
+
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="imageModal-<%= review._id %>"
+                                                        tabindex="-1"
+                                                        aria-labelledby="imageModalLabel-<%= review._id %>"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                            <div class="modal-content">
+                                                                <div class="modal-body p-0">
+                                                                    <img src="<%= review.image.url %>"
+                                                                        alt="Full Review Image" class="img-fluid w-100">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <% } %>
+
+                                                        <!-- Star rating -->
+                                                        <div class="mb-2 review-stars">
+                                                            <% for (let i=1; i <=5; i++) { %>
+                                                                <% if (i <=review.rating) { %>
+                                                                    <i class="bi bi-star-fill text-warning"></i>
+                                                                    <% } else { %>
+                                                                        <i class="bi bi-star "></i>
+                                                                        <% } %>
+                                                                            <% } %>
+                                                        </div>
+
+
+
+                                                        <!-- Review content -->
+                                                        <p class="mb-0">
+                                                            <%= review.body %>
+                                                        </p>
+
+                                                        <!-- Action Buttons -->
+                                                        <% if (currentUser && review.author.equals(currentUser._id)) {
+                                                            %>
+                                                            <div class="mt-auto text-end">
+                                                                <form
+                                                                    action="/posts/<%=post._id%>/reviews/<%=review._id%>?_method=DELETE"
+                                                                    method="POST" class="ms-2 delete-form">
+                                                                    <button
+                                                                        class="btn btn-sm btn-outline-danger open-delete-modal"
+                                                                        type="button">Delete</button>
+                                                                </form>
+                                                            </div>
+                                                            <% } %>
+                                            </div>
+
+                            </div>
+                        </div>
+                        <% } %>
+                            <%} else {%>
+                                <h3>No Reviews.</h3>
+                                <%}%>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <%- include('../partials/deleteModal') %>
+        <script>
+            // Wait until the DOM is fully loaded
+            document.addEventListener("DOMContentLoaded", function () {
+                const form = document.getElementById("review-form");
+
+                form.addEventListener("submit", function (e) {
+                    // Get the value of the selected rating
+                    const selectedRating = document.querySelector('input[name="review[rating]"]:checked').value;
+
+                    // If rating is "0", prevent form submission and alert the user
+                    if (selectedRating === "0") {
+                        // Optionally show a custom error message on the page
+                        const errorMsg = document.getElementById("form-error-msg-rating");
+                        errorMsg.textContent = "Please leave a rating before submitting your review.";
+                        errorMsg.style.display = "block";
+
+                        // Prevent form submission
+                        e.preventDefault();
+                    }
+                });
+            });
+        </script>

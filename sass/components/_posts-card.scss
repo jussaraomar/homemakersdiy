@@ -1,0 +1,173 @@
+@use '../abstracts/variables' as *;
+@use 'sass:color';
+
+
+.post-card {
+    background-color: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease;
+
+    width: 100%;
+    min-width: 70%;
+    height: 450px;
+    margin: 1rem;
+
+    &:hover {
+        transform: translateY(-5px);
+    }
+
+    .post-thumbnail {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+    }
+
+    .post-content {
+        flex: 1;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+
+        .post-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: $primary-red;
+        }
+
+        .post-description {
+            font-size: 0.95rem;
+            color: $text-font-color;
+            margin-bottom: 1rem;
+            flex-grow: 1;
+            overflow: hidden;
+            display: -webkit-box;
+
+            -webkit-box-orient: vertical;
+        }
+
+        .post-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto; // Push to bottom
+
+            .likes {
+                font-size: 0.9rem;
+                color: $accent-yellow;
+                display: flex;
+                align-items: center;
+                gap: 0.25rem;
+            }
+
+            .buttons {
+                display: flex;
+                gap: 0.5rem;
+
+                .btn {
+                    padding: 0.4rem 0.75rem;
+                    border-radius: 8px;
+                    border: none;
+                    cursor: pointer;
+                    font-size: 0.9rem;
+                    text-decoration: none;
+                    transition: background-color 0.2s ease;
+
+
+                    &.btn-view {
+                        background-color: $primary-red;
+                        color: $color-white;
+                        font-weight: bold;
+
+                        &:focus {
+                            outline: 2px solid $primary-red;
+                            outline-offset: 2px;
+                        }
+
+                        &.draft-view {
+                            background-color: $accent-yellow;
+                            color: $color-white;
+
+                            &:focus {
+                                outline: 2px solid $accent-yellow;
+                                outline-offset: 2px;
+                            }
+
+                        }
+
+
+                        &:hover {
+                            background-color: color.adjust($primary-red, $lightness: -15%);
+                        }
+                    }
+
+                    &.draft-delete {
+                        background-color: #e61111;
+                        color: $color-white;
+                        font-weight: bold;
+
+                        &:hover {
+
+                            background-color: color.adjust(#e61111, $lightness: -15%);
+                        }
+                    }
+
+
+
+
+                    &.bookmarked {
+                        border: 1px solid $accent-yellow;
+                        background-color: $accent-yellow;
+                        color: $color-white;
+
+                        &:focus {
+                            outline: 2px solid $accent-yellow;
+                            outline-offset: 2px;
+                        }
+
+                        .bi-marked {
+
+                            color: $primary-red
+                        }
+                    }
+
+                    &.unmarked {
+                        background-color: #f9f9f9;
+                        color: $text-font-color;
+                        border: 1px solid $accent-yellow;
+
+                        &:focus {
+                            outline: 2px solid $accent-yellow;
+                            outline-offset: 2px;
+                        }
+
+                        .bi-unmarked {
+
+                            color: $accent-yellow;
+                        }
+
+                    }
+
+                    .bi {
+                        color: $accent-yellow;
+                    }
+
+
+
+                    &:hover {
+                        background-color: #eee;
+                    }
+
+                    i {
+                        font-size: 1rem;
+                    }
+
+                }
+            }
+        }
+    }
+}

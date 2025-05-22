@@ -1,0 +1,105 @@
+@use '../abstracts/variables' as *;
+@use 'sass:color';
+
+.main-heading {
+
+    h1 {
+        font-family: $main-heading-font;
+        text-align: center;
+        font-weight: 700;
+        color: $primary-red;
+    }
+}
+
+.thread-card {
+    transition: transform 0.2s ease;
+
+    img {
+        object-fit: cover;
+    }
+
+    &:hover {
+        transform: translateY(-2px);
+    }
+
+    small {
+
+        font-weight: 500;
+    }
+
+    .thread-title {
+        color: $primary-red;
+    }
+
+    .btn-view {
+        background-color: color.adjust($accent-yellow, $lightness: -15%);
+        color: $color-white;
+        font-weight: bold;
+
+        &:hover {
+            background-color: $accent-yellow;
+        }
+    }
+}
+
+.thread-body-preview {
+    max-height: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.thread-show-container {
+    img {
+        object-fit: cover;
+    }
+
+
+    .thread-card-body {
+        font-size: 1rem;
+
+        h3 {
+            color: $primary-red;
+        }
+
+        .card {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+    }
+
+    .reply-form {
+        .card {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .reply-btn {
+            background-color: $primary-red;
+            color: $color-white;
+
+            &:hover {
+                background-color: color.adjust($primary-red, $lightness: -15%);
+
+
+            }
+        }
+    }
+
+
+    .replies-container {
+
+        img {
+            object-fit: cover;
+        }
+
+        h3 {
+            color: $primary-red;
+            font-weight: 700;
+        }
+
+        .card {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+    }
+
+
+}

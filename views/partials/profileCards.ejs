@@ -1,0 +1,35 @@
+<div class="col-sm-9 col-md-6 col-lg-3 d-flex justify-content-center">
+    <div class="post-card">
+        <img class="post-thumbnail" src="<%=post.thumbnail.url%>" alt="Post Thumbnail" />
+        <div class="post-content">
+            <h3 class="post-title">
+                <%= post.title.length> 40 ? post.title.substring(0, 40) + '...' : post.title %>
+            </h3>
+            <p class="post-description">
+                <%= post.description.length> 75 ? post.description.substring(0, 75) + '...' : post.description %>
+
+            </p>
+            <div class="post-meta">
+                <span class="likes">
+                    <i class="bi bi-heart-fill"></i>
+                    <%= post.likes.length %>
+                </span>
+                <div class="buttons">
+                    <a href="/posts/<%= post._id %>" class="btn btn-view">View</a>
+
+                    <% if (currentUser) { %>
+                        <% const isBookmarked=currentUser.bookmarks.includes(post._id.toString()); %>
+                            <form method="POST"
+                                action="/posts/<%= post._id %>/<%= isBookmarked ? 'unmark' : 'bookmark' %>?from=<%= formAction %>">
+
+                                <button class="btn btn-bookmark <%= isBookmarked ? 'bookmarked' : 'unmarked' %>">
+                                    <i
+                                        class="bi <%= isBookmarked ? 'bi-bookmark-fill' : 'bi-bookmark' %>  <%= isBookmarked ? 'bi-marked' : 'bi-unmarked' %>  "></i>
+                                </button>
+                            </form>
+                            <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

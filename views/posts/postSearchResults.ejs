@@ -1,0 +1,43 @@
+<% layout ('../layouts/boilerplate') %>
+
+
+    <!-- Search Bar -->
+    <div class="row justify-content-center">
+        <div class="header-card">
+            <div class="col">
+                <form class="search-bar mb-5" action="/posts/search" method="GET">
+                    <div class="input-group">
+                        <input type="search" class="form-control search-input" name="q" placeholder="Search posts..."
+                            value="<%= query %>" aria-label="Search posts" />
+                        <button class="btn btn-search" type="submit">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+            <%- include('../partials/filterSortForm', { tags, sort, formAction: '/posts/search' }) %>
+
+        </div>
+
+    </div>
+
+    <!-- Search Results  -->
+
+    <h2 class="mb-5">Search results for "<%= query %>"</h2>
+
+    <% if (posts.length===0) { %>
+        <p>No posts found.</p>
+        <% } else { %>
+
+
+            <div class="row">
+
+                <!-- <div class="row row-cols-1 row-cols-md-4 g-4">-->
+
+
+                <%- include('../partials/cardsIndex', {formAction: 'posts-search' , query, tags, sort }) %>
+
+            </div>
+
+            <% } %>

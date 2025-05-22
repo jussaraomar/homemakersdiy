@@ -1,0 +1,176 @@
+<% layout ('../layouts/boilerplate') %>
+
+
+    <div class="container my-2 thread-show-container">
+
+        <!-- Forum Post -->
+        <div class="row thread-card-body justify-content-center">
+            <div class="col-lg-10">
+                <div class="card border-0 rounded-4 mb-4">
+                    <div class="card-body p-5">
+                        <h3 class="card-title fw-bold mb-3">
+                            <%= thread.title %>
+                        </h3>
+                        <p class="card-text text-muted">
+                            <%= thread.body %>
+                        </p>
+                    </div>
+
+                    <div class="card-footer bg-white px-4 py-3 border-top">
+                        <div class="d-flex flex-column flex-sm-row align-items-center justify-content-between">
+                            <div class="d-flex align-items-center mb-2 mb-sm-0">
+                                <% if (thread.author.profilePicture) { %>
+                                    <img src="<%= thread.author.profilePicture.pfp %>" class="rounded-circle me-2"
+                                        style="height: 2.2rem; width: 2.2rem;" alt="Thread Author Profile Picture">
+                                    <% } else { %>
+                                        <div class="avatar-circle text-white rounded-circle d-flex align-items-center justify-content-center me-2"
+                                            style="height: 2.2rem; width: 2.2rem;">
+                                            <strong>
+                                                <%= thread.author.username.charAt(0).toUpperCase() %>
+                                            </strong>
+                                        </div>
+                                        <% } %>
+
+                                            <div>
+                                                <small class="text-muted">Posted by</small><br>
+                                                <a href="/users/<%= thread.author._id %>"
+                                                    class="fw-semibold text-decoration-none">
+                                                    <%= thread.author.username %>
+                                                </a>
+                                            </div>
+                            </div>
+
+                            <div class="d-flex flex-column flex-sm-row align-items-center gap-2">
+                                <% if (currentUser && thread.author.equals(currentUser._id)) { %>
+                                    <form action="/forum/<%= thread._id %>?_method=DELETE" method="POST"
+                                        class="mb-0 delete-form">
+                                        <button
+                                            class="btn btn-outline-danger btn-sm confirm-delete-form open-delete-modal"
+                                            type="button">
+                                            <i class="bi bi-trash"></i> Delete
+                                        </button>
+                                    </form>
+                                    <% } %>
+
+                                        <div class="text-sm-end">
+                                            <small class="text-muted">
+                                                Posted on: <%= thread.createdAt.toLocaleDateString('en-US', {
+                                                    year: 'numeric' , month: 'short' , day: 'numeric' }) %>
+                                            </small>
+                                        </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reply Form -->
+        <% if (currentUser) {%>
+            <div class="row reply-form justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card border-0  rounded-4 mb-4">
+                        <div class="card-body p-4">
+                            <form method="POST" id="reply-form" action="/forum/<%= thread._id %>/replies">
+                                <textarea name="reply[body]" class="form-control mb-3" id="body" rows="4"
+                                    placeholder="Write your reply..." required></textarea>
+                                <small id="body-count">0 / 300 words</small><br>
+                                <div id="form-error-msg" class="text-danger mb-2" style="display: none;">
+                                    Please fix the word limits before submitting.
+                                </div>
+                                <button type="submit" class="btn reply-btn">
+                                    <i class="bi bi-send-fill me-1"></i> Reply
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <%}%>
+
+                <!-- Replies -->
+                <div class="row replies-container justify-content-center">
+                    <div class="col-lg-10">
+                        <h3 class="mb-4">
+                            <%= thread.replies.length> 0 ? 'Replies' : 'No Replies Yet' %>
+                        </h3>
+
+                        <% for (let reply of thread.replies) { %>
+                            <div class="card mb-3 border-0 ">
+                                <div class="card-body p-4">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <% if (reply.author.profilePicture) { %>
+                                            <img src="<%= reply.author.profilePicture.pfp %>"
+                                                class="rounded-circle me-2" style="height: 2.2rem; width: 2.2rem;"
+                                                alt="Reply Author Profile Picture">
+                                            <% } else { %>
+                                                <div class="avatar-circle text-white rounded-circle d-flex align-items-center justify-content-center me-2"
+                                                    style="height: 2.2rem; width: 2.2rem;">
+                                                    <strong>
+                                                        <%= reply.author.username.charAt(0).toUpperCase() %>
+                                                    </strong>
+                                                </div>
+                                                <% } %>
+                                                    <a href="/users/<%= reply.author._id %>"
+                                                        class="fw-medium text-decoration-none">
+                                                        <%= reply.author.username %>
+                                                    </a>
+                                    </div>
+                                    <p class="mb-0 text-muted fs-6">
+                                        <%= reply.body %>
+                                    </p>
+                                    <% let userVote=null; if (currentUser) { const voteRecord=reply.votedBy.find(v=>
+                                        v.userId._id.equals(currentUser._id));
+                                        if (voteRecord) userVote = voteRecord.vote;
+                                        }
+                                        %>
+
+                                        <div class="d-flex align-items-center mt-2">
+                                            <form method="POST"
+                                                action="/forum/<%= thread._id %>/replies/<%= reply._id %>/vote"
+                                                class="me-1">
+                                                <input type="hidden" name="voteType" value="up">
+                                                <button type="submit"
+                                                    class="btn btn-sm <%= userVote === 1 ? 'text-success' : 'text-muted' %>">
+                                                    <i
+                                                        class="bi <%= userVote === 1 ? 'bi-hand-thumbs-up-fill' : 'bi-hand-thumbs-up' %>"></i>
+                                                </button>
+                                            </form>
+
+                                            <span class="mx-2 fw-bold">
+                                                <%= reply.votes %>
+                                            </span>
+
+                                            <form method="POST"
+                                                action="/forum/<%= thread._id %>/replies/<%= reply._id %>/vote"
+                                                class="ms-1">
+                                                <input type="hidden" name="voteType" value="down">
+                                                <button type="submit"
+                                                    class="btn btn-sm <%= userVote === -1 ? 'text-danger' : 'text-muted' %>">
+                                                    <i
+                                                        class="bi <%= userVote === -1 ? 'bi-hand-thumbs-down-fill' : 'bi-hand-thumbs-down' %>"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+
+                                </div>
+                                <% if (currentUser && reply.author.equals(currentUser._id)) { %>
+                                    <div class="card-footer bg-white border-top d-flex justify-content-end px-4 py-3">
+                                        <form action="/forum/<%= thread._id %>/replies/<%= reply._id %>?_method=DELETE"
+                                            method="POST" class="mb-0">
+                                            <button
+                                                class="btn btn-outline-danger btn-sm confirm-delete-form open-delete-modal"
+                                                type="button">
+                                                <i class=" bi bi-trash3"></i> Delete
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <% } %>
+                            </div>
+                            <% } %>
+                    </div>
+                </div>
+    </div>
+
+
+    <%- include('../partials/deleteModal') %>

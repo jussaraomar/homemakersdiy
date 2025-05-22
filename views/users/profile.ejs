@@ -1,0 +1,209 @@
+<% layout ('../layouts/boilerplate') %>
+
+    <div class="card__body container mb-5">
+        <div class="card__header row align-items-center g-4">
+
+            <!-- Profile Picture -->
+            <div class="card__profile col-12 col-md-auto text-center">
+                <%if(user.profilePicture){ %>
+                    <img src="<%=user.profilePicture?.url%>" alt="Profile Picture" class="rounded-circle">
+                    <%} else {%>
+                        <!-- Avatar placeholder -->
+                        <div class="avatar-circle d-none d-sm-flex align-items-center justify-content-center"
+                            style="width: 8rem; height: 8rem;">
+                            <span class="text-white" style="font-size:4rem;">
+                                <%= user.username.charAt(0).toUpperCase() %>
+                            </span>
+                        </div>
+                        <%}%>
+            </div>
+
+            <!-- Username and Bio  -->
+            <div class="col">
+                <div class="card__name">
+                    <h2>@<%= user.username %>
+                    </h2>
+                </div>
+                <div class="card__bio">
+                    <p>
+                        <%= user.bio %>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Account Settings  -->
+            <% if (currentUser && currentUser._id.toString()===user._id.toString()) { %>
+                <div class="card__button col-12 col-md-auto text-md-end dropdown text-end">
+                    <button class="dropdown-toggle" type="button" id="profileOptions" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="feather feather-edit">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                        <span>Account Settings</span>
+                    </button>
+
+                    <ul class="dropdown-menu" aria-labelledby="profileOptions">
+                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                data-bs-target="#changePfpModal">Change
+                                Profile Picture</a></li>
+                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                data-bs-target="#changeBioModal">Change
+                                Bio</a></li>
+                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                data-bs-target="#changeUsernameModal">Change Username</a></li>
+                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                data-bs-target="#changeEmailModal">Change Email</a></li>
+                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                data-bs-target="#changePasswordModal">Change Password</a></li>
+                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                data-bs-target="#deleteAccountModal">Delete Account</a></li>
+
+                    </ul>
+                </div>
+
+                <%- include('../partials/profileDropdown')%>
+                    <%}%>
+        </div>
+
+        <hr class="border__hr" />
+
+        <!-- Profile Nav Tabs  -->
+        <div class="nav">
+
+            <ul class="nav__links">
+                <div class="d-flex flex-column flex-sm-row">
+                    <li class="link__item user-work active">Works</li>
+                    <% if (currentUser && currentUser._id.toString()===user._id.toString()) { %>
+                        <li class="link__item user-drafts ">Drafts</li>
+                        <li class="link__item user-faves ">Bookmarks</li>
+
+                        <%}%>
+                            <li class="link__item user-threads ">Questions</li>
+                </div>
+            </ul>
+
+        </div>
+
+        <hr class="border__hr" />
+
+
+
+
+        <div class="profile-body">
+            <!-- Works  -->
+            <div class="profile-work container tab">
+
+                <% if (publishedPosts.length> 0) { %>
+                    <div class="row">
+                        <% publishedPosts.forEach(post=> { %>
+                            <%- include('../partials/profileCards', { formAction: 'profile' , post }) %>
+                                <% }) %>
+                    </div>
+                    <% } else { %>
+                        <h3>No Published Works.</h3>
+                        <% } %>
+
+            </div>
+
+            <!-- Drafts  -->
+            <% if (currentUser && currentUser._id.toString()===user._id.toString()) { %>
+
+                <div class="profile-drafts tab" style="display: none;">
+                    <% if (drafts.length> 0) { %>
+
+                        <div class="row ">
+
+                            <% drafts.forEach(draft=> { %>
+
+
+                                <div class="col-sm-9 col-md-6 col-lg-3 d-flex justify-content-center">
+                                    <div class="post-card">
+                                        <img class="post-thumbnail" src="<%=draft.thumbnail.url%>"
+                                            alt="Post Thumbnail" />
+                                        <div class="post-content">
+                                            <h3 class="post-title">
+                                                <%= draft.title.length> 40 ? draft.title.substring(0, 40) +
+                                                    '...' :
+                                                    draft.title %>
+                                            </h3>
+                                            <p class="post-description">
+                                                <%= draft.description.length> 75 ?
+                                                    draft.description.substring(0, 75) +
+                                                    '...' : draft.description %>
+
+                                            </p>
+                                            <div class="post-meta">
+
+                                                <div class="buttons">
+                                                    <% if (currentUser && draft.author.equals(currentUser._id)) {%>
+
+                                                        <a href="/posts/<%= draft._id %>/edit"
+                                                            class="btn btn-view draft-view">Edit</a>
+
+                                                        <form class=""
+                                                            action="/posts/<%=draft._id%>?from=profile&_method=DELETE"
+                                                            method="POST">
+                                                            <button
+                                                                class="btn draft-delete  confirm-delete-form open-delete-modal"
+                                                                type="button">Delete</button>
+                                                        </form>
+                                                        <% } %>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <% })%>
+                        </div>
+                        <% } else { %>
+                            <h3>No Drafts</h3>
+                            <% } %>
+                </div>
+
+
+
+                <!-- Bookmarks  -->
+                <div class="profile-bookmarks container tab" style="display: none;">
+
+                    <% if (user.bookmarks.length> 0) { %>
+                        <div class="row ">
+
+                            <% user.bookmarks.forEach(post=> { %>
+
+                                <%- include('../partials/profileCards', {formAction: 'profile' , post }) %>
+
+                                    <% })%>
+
+                        </div>
+                        <% } else { %>
+                            <h3>No Drafts</h3>
+                            <% } %>
+
+
+                </div>
+                <%}%>
+
+
+                    <!-- Threads  -->
+                    <div class="profile-threads container tab">
+
+
+
+                        <div class="row">
+                            <div class="col">
+
+                                <%- include('../partials/forumCards') %>
+                            </div>
+
+                        </div>
+                    </div>
+
+        </div>
+
+        <!--Delete Confirmation Modal-->
+        <%- include('../partials/deleteModal') %>

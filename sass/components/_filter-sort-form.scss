@@ -1,0 +1,79 @@
+@use '../abstracts/variables' as *;
+@use 'sass:color';
+
+.filter-form {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+
+
+
+    .custom-select {
+        border-radius: 8px;
+        transition: border-color 0.3s ease;
+
+        &:focus {
+            border-color: $primary-red;
+            box-shadow: 0 0 0 0.2rem rgba(78, 168, 222, 0.25);
+        }
+    }
+
+    .toggle-btn {
+        background-color: $color-white;
+        color: $accent-yellow;
+        border: 1px solid $accent-yellow;
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        transition: background-color 0.3s ease;
+        font-weight: 600;
+
+        &:hover {
+            background-color: $accent-yellow;
+            color: $color-white;
+        }
+
+        &:focus {
+            outline: 1px solid $accent-yellow;
+            outline-offset: 2px;
+        }
+
+        i {
+            margin-right: 0.4rem;
+        }
+
+    }
+
+    .btn-apply {
+        background-color: $primary-red;
+        color: white;
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        transition: background-color 0.3s ease;
+        font-weight: 600;
+
+        &:hover {
+            background-color: color.adjust($primary-red, $lightness: -15%);
+        }
+
+        &:focus {
+            outline: 1px solid $primary-red;
+            outline-offset: 2px;
+        }
+
+        i {
+            margin-right: 0.4rem;
+        }
+    }
+
+    fieldset {
+        border: none;
+        padding: 0.5rem 0;
+    }
+
+    legend {
+        margin-bottom: 0.5rem;
+    }
+}

@@ -1,0 +1,14 @@
+<!-- Renders error page -->
+<% layout ('../layouts/boilerplate') %>
+    <div class="row">
+        <div class="col-12 col-md-8 offset-md-2">
+            <div class="alert alert-danger text-break" role="alert">
+                <h4 class="alert-heading">
+                    <%= err.message %>
+                </h4>
+                <% if (process.env.NODE_ENV !=='production' ) { %>
+                    <pre style="white-space: pre-wrap; word-break: break-word;" class="small"><%= err.stack %></pre>
+                    <% } %>
+            </div>
+        </div>
+    </div>

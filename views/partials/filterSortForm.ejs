@@ -1,0 +1,75 @@
+<% const selectedTags=typeof tags !=='undefined' ? tags : []; %>
+    <% const currentSort=typeof sort !=='undefined' ? sort : '' ; %>
+
+        <div class="col">
+            <form action="<%= formAction || '/posts' %>" method="GET" class="filter-form mb-5">
+
+                <% if (typeof query !=='undefined' && query) { %>
+                    <input class="index-search" type="hidden" name="q" value="<%= query %>">
+                    <% } %>
+
+                        <div class="row align-items-end g-3 mb-3">
+                            <!-- Sort  -->
+                            <div class="col-md-4">
+                                <label for="sort" class="form-label">Sort By</label>
+                                <select name="sort" id="sort" class="form-select custom-select">
+                                    <!-- <option value="">Default</option> -->
+
+                                    <option value="newest" <%=currentSort==='newest' ? 'selected' : '' %>>Newest
+                                    </option>
+                                    <option value="oldest" <%=currentSort==='oldest' ? 'selected' : '' %>>Oldest
+                                    </option>
+                                    <option value="likes" <%=currentSort==='likes' ? 'selected' : '' %>>Most Liked
+                                    </option>
+
+                                </select>
+                            </div>
+
+                            <!-- Show Filters Button  -->
+
+                            <div class="col-md-4">
+                                <button class="btn  toggle-btn w-100" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#filterCollapse">
+                                    <i class="bi bi-funnel"></i> Show Filters
+                                </button>
+                            </div>
+
+                            <!-- Apply Filters Button  -->
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-apply w-100">
+                                    Apply
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Tags  -->
+
+                        <div class="collapse" id="filterCollapse">
+                            <% const tagGroups={ 'Content Type' : ['tutorial', 'article' , 'guide' , 'tip'
+                                , 'product-review' , 'before-after' , 'step-by-step' ], 'Room' : ['kitchen', 'bathroom'
+                                , 'bedroom' , 'living-room' , 'garage' , 'basement' , 'laundry-room' , 'outdoor'
+                                ], 'Project Type' : ['painting', 'flooring' , 'plumbing' , 'electrical' , 'tiling'
+                                , 'furniture' , 'lighting' , 'decor' , 'storage' , 'organization' , 'landscaping'
+                                ], 'Other' : ['beginner', 'intermediate' , 'advanced' , 'budget-friendly' , 'mid-range'
+                                , 'premium' ] }; %>
+                                <% for (let [group, tagsArray] of Object.entries(tagGroups)) { %>
+                                    <fieldset class="mb-4">
+                                        <legend class="form-label fs-6 fw-semibold text-muted">
+                                            <%= group %>
+                                        </legend>
+                                        <% tagsArray.forEach(tag=> { %>
+                                            <div class="form-check form-check-inline mb-2">
+                                                <input class="form-check-input" type="checkbox" name="tags[]"
+                                                    value="<%= tag %>" <%=selectedTags.includes(tag) ? 'checked' : ''
+                                                    %>>
+                                                <label class="form-check-label text-capitalize">
+                                                    <%= tag.replace('-', ' ' ) %>
+                                                </label>
+                                            </div>
+                                            <% }) %>
+                                    </fieldset>
+                                    <% } %>
+                        </div>
+            </form>
+
+        </div>

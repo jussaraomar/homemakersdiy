@@ -1,0 +1,231 @@
+@use '../abstracts/variables' as *;
+@use 'sass:color';
+
+
+.show-header {
+
+  position: relative;
+
+  .post-hero {
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    height: 500px;
+    width: 100%;
+    // position: relative;
+    // z-index: 1;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+
+  .container {
+
+    width: 100%;
+    // background-color: aqua;
+
+
+
+    .post-title-card {
+      position: relative;
+      top: -5rem;
+      left: 20%;
+      transform: translateX(-50%);
+      width: 65%;
+      z-index: 2;
+      max-width: 900px;
+
+      h2 {
+        color: $primary-red;
+      }
+    }
+  }
+
+  .show-header-buttons {
+    .show-edit-btn {
+      background-color: $accent-yellow;
+      color: $color-white;
+      font-weight: bold;
+
+      &:focus {
+        outline: 1px solid $accent-yellow;
+        outline-offset: 2px;
+      }
+
+      &:hover {
+        background-color: color.adjust($accent-yellow, $lightness: -15%);
+      }
+    }
+
+    .show-delete-btn {
+      font-weight: bold;
+    }
+  }
+
+  .buttons {
+
+    .bookmarked {
+      border: 1px solid $accent-yellow;
+      background-color: $accent-yellow;
+      color: $color-white;
+
+      &:focus {
+        outline: 1px solid $accent-yellow;
+        outline-offset: 2px;
+      }
+
+      .bi-marked {
+
+        color: $primary-red
+      }
+    }
+
+    .unmarked {
+      background-color: #f9f9f9;
+      color: $text-font-color;
+      border: 1px solid $accent-yellow;
+
+      &:focus {
+        outline: 1px solid $accent-yellow;
+        outline-offset: 2px;
+      }
+
+      .bi {
+        color: $accent-yellow;
+      }
+
+      .bi-unmarked {
+
+        color: $accent-yellow;
+      }
+
+    }
+
+  }
+
+}
+
+.image-preview {
+  text-align: center;
+
+  img {
+    display: block;
+    margin: 0.5rem auto;
+    max-width: 100%;
+    height: auto;
+
+  }
+}
+
+#viewer {
+  text-align: center;
+
+  background-color: #FDFDFD;
+  border-radius: 20px;
+  padding: 1rem;
+  box-shadow: 0 0 60px rgba(0, 0, 0, 0.08);
+
+
+  img {
+    display: block;
+    margin: 0.5rem auto;
+    max-width: 100%;
+    height: auto;
+
+
+  }
+}
+
+.review-form {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease-in-out;
+
+  .form-control:focus {
+    border-color: $accent-yellow;
+    box-shadow: 0 0 0 0.2rem rgba(255, 219, 99, 0.25);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+}
+
+.reviews-container {
+  img {
+    object-fit: cover;
+  }
+
+  h3 {
+    color: $primary-red;
+
+  }
+
+}
+
+.review-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #333;
+}
+
+
+
+
+.btn-review {
+  background-color: $primary-red;
+  color: white;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+
+  &:focus {
+    background-color: $primary-red;
+    outline: 1px solid $primary-red;
+    outline-offset: 2px;
+  }
+
+  &:hover {
+    background-color: color.adjust($primary-red, $lightness: -15%);
+    color: $color-white;
+  }
+
+}
+
+.btn-dark:hover {
+  background-color: #1d1d1d;
+}
+
+.review-stars {
+
+  .bi-star {
+    color: $accent-yellow;
+  }
+
+}
+
+
+
+
+.avatar-circle {
+  width: 48px;
+  height: 48px;
+  background-color: $accent-yellow;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.review-card {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+
+  // .review-content {
+  //   h5 {
+  //     //  color: $primary-red;
+  //   }
+  // }
+}

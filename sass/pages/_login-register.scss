@@ -1,0 +1,29 @@
+@use '../abstracts/variables' as *;
+@use 'sass:color';
+
+
+.login-card,
+.register-card {
+    h5 {
+        font-family: $main-heading-font;
+        color: $primary-red;
+        font-weight: 700;
+        text-align: center;
+    }
+
+    .forgot-link {
+        color: $accent-yellow;
+    }
+
+    .btn-login,
+    .btn-register {
+        background-color: $primary-red;
+        color: $color-white;
+
+        &:hover {
+            background-color: color.adjust($primary-red, $lightness: -15%);
+
+
+        }
+    }
+}

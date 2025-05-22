@@ -1,0 +1,65 @@
+<nav class="navbar sticky-top navbar-expand-lg ">
+    <div class="container-fluid">
+        <!-- Logo  -->
+        <a href="/"><img src="/images/logo-transparent.png" class="logo__navbar" alt="Home Makers Logo Navbar"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar Links  -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/posts">Posts</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/forum">Forum</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/posts/new">New Post</a>
+                </li>
+
+
+            </ul>
+
+
+            <!-- Search and Profile Links  -->
+            <div class="navbar-nav ml-auto">
+                <form class="d-flex mx-5" action="/posts/search" method="GET">
+                    <input class="form-control me-2" type="search" name="q" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-search-nav" type="submit"> <i class="bi bi-search"></i></button>
+                </form>
+                <% if(!currentUser) { %>
+                    <a class="nav-link" href="/login">Login</a>
+                    <a class="nav-link" href="/register">Register</a>
+                    <% } else{ %>
+                        <div class="navbar__profile d-flex">
+                            <div class="navbar__pfp">
+
+
+                                <%if(currentUser.profilePicture){ %>
+                                    <img src="<%=currentUser.profilePicture?.pfp%>" alt="User Profile Picture"
+                                        class="rounded-circle">
+                                    <%} else {%>
+                                        <!-- Avatar placeholder -->
+                                        <div class="avatar-circle d-none d-sm-flex align-items-center justify-content-center"
+                                            style="width: 2.5rem; height: 2.5rem;">
+                                            <span class="text-white">
+                                                <%= currentUser.username.charAt(0).toUpperCase() %>
+                                            </span>
+                                        </div>
+                                        <%}%>
+
+
+                            </div>
+                            <a class="nav-link" href="/users/<%=currentUser._id%>">Profile</a>
+                        </div>
+                        <a class="nav-link" href="/logout">Logout</a>
+                        <% } %>
+            </div>
+        </div>
+    </div>
+</nav>
