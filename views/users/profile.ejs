@@ -1,7 +1,7 @@
 <% layout ('../layouts/boilerplate') %>
 
     <div class="card__body container mb-5">
-        <div class="card__header row align-items-center g-4">
+        <div class="card__header row align-items-center g-4 mt-2">
 
             <!-- Profile Picture -->
             <div class="card__profile col-12 col-md-auto text-center">
@@ -75,7 +75,7 @@
 
             <ul class="nav__links">
                 <div class="d-flex flex-column flex-sm-row">
-                    <li class="link__item user-work active">Works</li>
+                    <li class="link__item user-post active">Posts</li>
                     <% if (currentUser && currentUser._id.toString()===user._id.toString()) { %>
                         <li class="link__item user-drafts ">Drafts</li>
                         <li class="link__item user-faves ">Bookmarks</li>
@@ -93,8 +93,8 @@
 
 
         <div class="profile-body">
-            <!-- Works  -->
-            <div class="profile-work container tab">
+            <!-- Posts  -->
+            <div class="profile-posts container tab">
 
                 <% if (publishedPosts.length> 0) { %>
                     <div class="row">
@@ -103,7 +103,7 @@
                                 <% }) %>
                     </div>
                     <% } else { %>
-                        <h3>No Published Works.</h3>
+                        <h3>No Published Posts.</h3>
                         <% } %>
 
             </div>
@@ -161,7 +161,7 @@
                                 <% })%>
                         </div>
                         <% } else { %>
-                            <h3>No Drafts</h3>
+                            <h3>No Drafts.</h3>
                             <% } %>
                 </div>
 
@@ -181,7 +181,7 @@
 
                         </div>
                         <% } else { %>
-                            <h3>No Drafts</h3>
+                            <h3>No Bookmarks.</h3>
                             <% } %>
 
 

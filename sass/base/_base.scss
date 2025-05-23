@@ -48,12 +48,6 @@ body {
     scroll-behavior: smooth;
 }
 
-*:focus {
-    outline: 1px solid $accent-yellow;
-    outline-offset: 2px;
-}
-
-
 .fixed {
     position: fixed;
     width: 100%;

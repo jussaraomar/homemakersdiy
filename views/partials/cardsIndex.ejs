@@ -1,42 +1,48 @@
-<% for (let post of posts) {%>
-    <div class="col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center">
-        <div class="post-card">
-            <!-- Thumbnail  -->
-            <img class="post-thumbnail" src="<%=post.thumbnail.url%>" alt="Post Thumbnail" />
-            <div class="post-content">
-                <!-- Title  -->
-                <h3 class="post-title">
-                    <%= post.title.length> 40 ? post.title.substring(0, 40) + '...' : post.title %>
-                </h3>
-                <!-- Description  -->
-                <p class="post-description">
-                    <%= post.description.length> 75 ? post.description.substring(0, 75) + '...' : post.description %>
+<% if (posts.length> 0) { %>
+    <% for (let post of posts) {%>
+        <div class="col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center">
+            <div class="post-card">
+                <!-- Thumbnail  -->
+                <img class="post-thumbnail" src="<%=post.thumbnail.url%>" alt="Post Thumbnail" />
+                <div class="post-content">
+                    <!-- Title  -->
+                    <h3 class="post-title">
+                        <%= post.title.length> 40 ? post.title.substring(0, 40) + '...' : post.title %>
+                    </h3>
+                    <!-- Description  -->
+                    <p class="post-description">
+                        <%= post.description.length> 75 ? post.description.substring(0, 75) + '...' : post.description
+                            %>
 
-                </p>
-                <div class="post-meta">
-                    <!-- Likes  -->
-                    <span class="likes">
-                        <i class="bi bi-heart-fill"></i>
-                        <%= post.likes.length %>
-                    </span>
-                    <!-- Buttons  -->
-                    <div class="buttons">
-                        <a href="/posts/<%= post._id %>" class="btn btn-view">View</a>
+                    </p>
+                    <div class="post-meta">
+                        <!-- Likes  -->
+                        <span class="likes">
+                            <i class="bi bi-heart-fill"></i>
+                            <%= post.likes.length %>
+                        </span>
+                        <!-- Buttons  -->
+                        <div class="buttons">
+                            <a href="/posts/<%= post._id %>" class="btn btn-view">View</a>
 
-                        <% if (currentUser) { %>
-                            <% const isBookmarked=currentUser.bookmarks.includes(post._id.toString()); %>
-                                <form method="POST"
-                                    action="/posts/<%= post._id %>/<%= isBookmarked ? 'unmark' : 'bookmark' %>?from=<%= formAction %><% if (typeof query !== 'undefined') { %>&q=<%= encodeURIComponent(query) %><% } %><% if (tags && tags.length) { tags.forEach(tag => { %>&tags[]=<%= tag %><% }) } %><% if (sort) { %>&sort=<%= sort %><% } %>">
+                            <% if (currentUser) { %>
+                                <% const isBookmarked=currentUser.bookmarks.includes(post._id.toString()); %>
+                                    <form method="POST"
+                                        action="/posts/<%= post._id %>/<%= isBookmarked ? 'unmark' : 'bookmark' %>?from=<%= formAction %><% if (typeof query !== 'undefined') { %>&q=<%= encodeURIComponent(query) %><% } %><% if (tags && tags.length) { tags.forEach(tag => { %>&tags[]=<%= tag %><% }) } %><% if (sort) { %>&sort=<%= sort %><% } %>">
 
-                                    <button class="btn btn-bookmark <%= isBookmarked ? 'bookmarked' : 'unmarked' %>">
-                                        <i
-                                            class="bi <%= isBookmarked ? 'bi-bookmark-fill' : 'bi-bookmark' %>  <%= isBookmarked ? 'bi-marked' : 'bi-unmarked' %>  "></i>
-                                    </button>
-                                </form>
-                                <% } %>
+                                        <button
+                                            class="btn btn-bookmark <%= isBookmarked ? 'bookmarked' : 'unmarked' %>">
+                                            <i
+                                                class="bi <%= isBookmarked ? 'bi-bookmark-fill' : 'bi-bookmark' %>  <%= isBookmarked ? 'bi-marked' : 'bi-unmarked' %>  "></i>
+                                        </button>
+                                    </form>
+                                    <% } %>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <% }%>
+        <% }%>
+            <% } else { %>
+                <h3>No Published Posts.</h3>
+                <% } %>
