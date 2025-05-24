@@ -5,8 +5,7 @@ const escapeRegex = require('../utilities/escapeRegex')
 module.exports.index = async (req, res) => {
 
     const query = req.query.q || '';
-    const sort = req.query.sort || '';
-
+    const sort = req.query.sort || 'newest';
 
 
     let sortOption = {};
@@ -15,10 +14,7 @@ module.exports.index = async (req, res) => {
 
     const threads = await Thread.find({}).sort(sortOption).populate('author');
 
-
     res.render('forum/index', { threads, sort, query })
-
-
 }
 
 // Search all threads
