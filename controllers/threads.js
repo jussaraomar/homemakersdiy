@@ -55,7 +55,6 @@ module.exports.createThread = async (req, res, next) => {
 
     const thread = new Thread(req.body.thread)
     thread.author = req.user._id;
-    console.log(thread)
 
     await thread.save();
 

@@ -466,13 +466,13 @@ module.exports.deletePost = async (req, res) => {
 
 module.exports.deleteImages = async (req, res) => {
     const { removedImages } = req.body;
-    console.log('images to be removed:', removedImages);
+
 
     try {
         const results = await Promise.all(
             removedImages.map(async (url) => {
                 const publicId = extractPublicIdFromUrl(url);
-                console.log('Deleting publicId:', publicId);
+
                 return await cloudinary.uploader.destroy(publicId);
             })
         );
