@@ -1,0 +1,1 @@
+To run this project, create a .env file based on .env.example with your own credentials, then run docker compose up --build.
