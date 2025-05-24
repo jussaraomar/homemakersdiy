@@ -18,6 +18,8 @@ module.exports.createReply = async (req, res) => {
 }
 
 
+// Upvote or Downvote replies on the forum thread
+// Replies with the most votes go to the top
 module.exports.voteReply = async (req, res) => {
 
     const thread = await Thread.findById(req.params.id)
